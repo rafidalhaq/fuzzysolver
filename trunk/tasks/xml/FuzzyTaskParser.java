@@ -10,7 +10,7 @@
  * and open the template in the editor.
  */
 
-package fuzzysolver;
+package tasks.xml;
 
 import java.io.IOException;
 import java.util.Stack;

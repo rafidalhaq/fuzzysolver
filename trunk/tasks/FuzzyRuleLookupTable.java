@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package fuzzysolver;
+package tasks;
 
 import java.util.List;
 

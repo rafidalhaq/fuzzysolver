@@ -10,7 +10,7 @@
  * and open the template in the editor.
  */
 
-package fuzzysolver;
+package tasks.xml;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
