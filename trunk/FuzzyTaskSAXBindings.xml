@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE SAX-bindings PUBLIC "-//XML Module//DTD SAX Bindings 1.0//EN" "">
+<SAX-bindings version='1'>
+	<bind element='jobs' method='jobs' type='CONTAINER' ></bind>
+	<bind element='connection' method='connection' type='EMPTY' ></bind>
+	<bind element='task' method='task' type='CONTAINER' ></bind>
+	<bind element='job' method='job' type='EMPTY' ></bind>
+	<bind element='rules' method='rules' type='CONTAINER' ></bind>
+	<bind element='size' method='size' type='EMPTY' ></bind>
+	<bind element='variables' method='variables' type='CONTAINER' ></bind>
+	<bind element='function' method='function' type='CONTAINER' ></bind>
+	<bind element='id' method='id' type='DATA' ></bind>
+	<bind element='point' method='point' type='EMPTY' ></bind>
+	<bind element='graph' method='graph' type='CONTAINER' ></bind>
+	<bind element='name' method='name' type='DATA' ></bind>
+	<bind element='rule' method='rule' type='EMPTY' ></bind>
+	<bind element='part' method='part' type='CONTAINER' ></bind>
+	<bind element='variable' method='variable' type='CONTAINER' ></bind>
+</SAX-bindings>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task SYSTEM 'FuzzyTask.dtd'>
+<!--
+    Document   : sample.xml
+    Created on : 22. Juni 2010, 17:04
+    Author     : malygos
+    Description:
+        Purpose of the document follows.
+-->
+
+<task>
+    <name>Oelverbrauch</name>
+    <graph>
+        <size x="300" y="300"/>
+    </graph>
+    <variables>
+        <variable>
+            <name>Oelverbrauch</name>
+            <id>1</id>
+            <function>
+                <part name="niedrig">
+                    <point x="0" y="0"/>
+                    <point x="25" y="1"/>
+                    <point x="50" y="0"/>
+                </part>
+                <part name="mittel">
+                    <point x="25" y="0"/>
+                    <point x="50" y="1"/>
+                    <point x="75" y="0"/>
+                </part>
+                <part name="hoch">
+                    <point x="50" y="0"/>
+                    <point x="75" y="1"/>
+                </part>
+            </function>
+        </variable>
+         <variable>
+            <name>Oelpreis</name>
+            <id>1</id>
+            <function>
+                <part name="niedrig">
+                    <point x="0" y="1"/>
+                    <point x="12" y="0"/>
+                </part>
+                <part name="mittel">
+                    <point x="4" y="0"/>
+                    <point x="16" y="1"/>
+                    <point x="28" y="0"/>
+                </part>
+                <part name="hoch">
+                    <point x="20" y="0"/>
+                    <point x="32" y="1"/>
+                </part>
+            </function>
+        </variable>
+         <variable>
+            <name>Temperatur</name>
+            <id>1</id>
+            <function>
+                <part name="kalt">
+                    <point x="-10" y="1"/>
+                    <point x="10" y="0"/>
+                </part>
+                <part name="normal">
+                    <point x="-10" y="0"/>
+                    <point x="10" y="1"/>
+                    <point x="30" y="0"/>
+                </part>
+                <part name="warm">
+                    <point x="10" y="0"/>
+                    <point x="30" y="1"/>
+                </part>
+            </function>
+        </variable>
+    </variables>
+    <rules>
+        <connection type="AND"/>
+        <variables lv1="2" lv2="3"/>
+        <rule val_lv1="niedrig" val_lv2="kalt" result="hoch"/>
+        <rule val_lv1="niedrig" val_lv2="normal" result="hoch"/>
+        <rule val_lv1="niedrig" val_lv2="warm" result="mittel"/>
+        <rule val_lv1="mittel" val_lv2="kalt" result="hoch"/>
+        <rule val_lv1="mittel" val_lv2="normal" result="mittel"/>
+        <rule val_lv1="mittel" val_lv2="warm" result="niedrig"/>
+        <rule val_lv1="hoch" val_lv2="kalt" result="mittel"/>
+        <rule val_lv1="hoch" val_lv2="normal" result="niedrig"/>
+        <rule val_lv1="hoch" val_lv2="warm" result="niedrig"/>
+    </rules>
+    <jobs>
+        <variables lv1="2" lv2="3"/>
+        <job graphical_vars="1"/>
+        <job graphical_fuzzy="1" val_lv1="28" val_lv2="7"/>
+        <job docalculations="1"/>
+        <job dounfuzzy="1"/>
+    </jobs>
+</task>

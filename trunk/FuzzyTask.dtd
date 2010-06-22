@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/sample.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE task SYSTEM "sample.dtd">
+
+    <task>
+    ...
+    </task>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT task (jobs|rules|variables|graph|name)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT name (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT graph (size)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT size EMPTY>
+<!ATTLIST size
+    y CDATA #IMPLIED
+    x CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT variables (variable)*>
+<!ATTLIST variables
+    lv2 CDATA #IMPLIED
+    lv1 CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT variable (function|id|name)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT id (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT function (part)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT part (point)*>
+<!ATTLIST part
+    name CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT point EMPTY>
+<!ATTLIST point
+    y CDATA #IMPLIED
+    x CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT rules (rule|variables|connection)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT connection EMPTY>
+<!ATTLIST connection
+    type CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT rule EMPTY>
+<!ATTLIST rule
+    result CDATA #IMPLIED
+    val_lv2 CDATA #IMPLIED
+    val_lv1 CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT jobs (job|variables)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT job EMPTY>
+<!ATTLIST job
+    dounfuzzy CDATA #IMPLIED
+    docalculations CDATA #IMPLIED
+    val_lv2 CDATA #IMPLIED
+    val_lv1 CDATA #IMPLIED
+    graphical_fuzzy CDATA #IMPLIED
+    graphical_vars CDATA #IMPLIED
+  >
