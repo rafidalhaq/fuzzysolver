@@ -8,8 +8,9 @@
  *
  * Created on 22.06.2010, 15:07:17
  */
-package fuzzysolver;
+package gui;
 
+import tasks.xml.FuzzyTask;
 import java.awt.FileDialog;
 import java.io.FileNotFoundException;
 import java.io.IOException;
