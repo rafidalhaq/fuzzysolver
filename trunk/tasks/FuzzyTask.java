@@ -6,6 +6,7 @@ package tasks;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -203,7 +204,104 @@ public class FuzzyTask {
                 int y_end = (int) (325 - point_end[1] * scale_y);
                 g.drawLine(x_start, y_start, x_end, y_end);
 
+                g.setColor(Color.black);
+                g.drawString("" + (int) point_start[0], x_start - 10, 350);
+                g.drawString("" + (int) point_end[0], x_end - 10, 350);
+
+                g.setColor(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
             }
         }
+    }
+
+    public List<FuzzyPart> getFuzzyForExactValue(float exactValue, LinguisticVariable var) {
+        if (!linguisticVariables.contains(var)) {
+            return null;
+        }
+
+        List<FuzzyPart> parts = new ArrayList<FuzzyPart>();
+
+        for (int i = 0; i < var.getFuzzyParts().size(); i++) {
+            FuzzyPart p = var.getFuzzyParts().get(i);
+            if (p.isInPart(exactValue)) {
+                parts.add(p);
+            }
+        }
+
+        return parts;
+    }
+
+    public void drawGraphicWithExactValue(LinguisticVariable var, Graphics g, float exactValue) {
+        drawGraphic(var, g);
+        g.setColor(Color.green);
+        float[] uod = getUoD(var);
+        float max_x = Math.max(uod[0], uod[1]);
+
+        int scale_x = (int) (325 / max_x);
+        int scale_y = 325;
+
+        int x = (int) (exactValue * scale_x + 25);
+
+        g.drawLine(x, 0, x, 325);
+    }
+
+    public void drawCompleteGraphic(LinguisticVariable var, Graphics g, float exactValue){
+        drawGraphicWithExactValue(var, g, exactValue);
+
+        g.setColor(Color.green);
+        float[] uod = getUoD(var);
+        float max_x = Math.max(uod[0], uod[1]);
+
+        int scale_x = (int) (325 / max_x);
+        int scale_y = 325;
+
+        List<FuzzyResult> results = CalculateEffectiveDegree(var, exactValue);
+
+        int x = (int) (exactValue * scale_x + 25);
+
+        for (int i=0; i< results.size(); i++){
+            FuzzyResult fRes = results.get(i);
+
+            int y = (int) (325 - fRes.getEffectiveDegree() * scale_y);
+
+            g.drawLine(x, y, 25, y);
+
+            g.setColor (Color.black);
+            g.drawString(""+fRes.getEffectiveDegree(), 15, y);
+            g.setColor(Color.green);
+        }
+
+    }
+
+    public List<FuzzyResult> CalculateEffectiveDegree(LinguisticVariable var, float exactValue) {
+        if (!linguisticVariables.contains(var)) {
+            return null;
+        }
+        List<FuzzyPart> parts = getFuzzyForExactValue(exactValue, var);
+        int partCount = parts.size();
+        List<FuzzyResult> values = new ArrayList<FuzzyResult>();
+
+        for (int i = 0; i < partCount; i++) {
+            FuzzyPart p = parts.get(i);
+            if (p.isInPart(exactValue)) {
+                FuzzyResult fRes = new FuzzyResult();
+                fRes.setExactValue(exactValue);
+                fRes.setPart(p);
+                if (p.isTrivial(exactValue)) {
+                    fRes.setEffectiveDegree(p.getTrivialResult(exactValue));
+                } else {
+                    float value = 0f;
+                    if (exactValue >= p.getMinimum() && exactValue < p.getHighestPoint()) {
+                        value = (exactValue - p.getMinimum()) / (p.getHighestPoint() - p.getMinimum());
+                    } else if (exactValue > p.getHighestPoint() && exactValue <= p.getMaximum()) {
+                        value = 1 - ((exactValue - p.getHighestPoint()) / (p.getMaximum() - p.getHighestPoint()));
+                    }
+                    fRes.setEffectiveDegree(value);
+                }
+                values.add(fRes);
+            }
+
+        }
+
+        return values;
     }
 }

@@ -128,7 +128,9 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
         OelVerbrauch verbrauch = new OelVerbrauch();
         float[] uod = verbrauch.getUoD(verbrauch.getLinguisticVariables().get(0));
         label2.setText("["+uod[0]+", "+uod[1]+"]");
-        verbrauch.drawGraphic(verbrauch.getLinguisticVariables().get(0), canvas1.getGraphics());
+        //verbrauch.drawGraphic(verbrauch.getLinguisticVariables().get(0), canvas1.getGraphics());
+        //verbrauch.drawGraphicWithExactValue(verbrauch.getLinguisticVariables().get(0), canvas1.getGraphics(),17);
+        verbrauch.drawCompleteGraphic(verbrauch.getLinguisticVariables().get(0), canvas1.getGraphics(),17);
     }//GEN-LAST:event_btnSolveFuzzyTaskActionPerformed
 
     /**
