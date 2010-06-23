@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author malygos
  */
-public class FuzzyTask {
+public abstract class FuzzyTask {
 
     private String name;
     private List<LinguisticVariable> linguisticVariables;
@@ -128,6 +128,8 @@ public class FuzzyTask {
         this.rules = rules;
     }
 
+    public abstract float solve(Graphics g, float[] exactValues);
+
     public float[] getUoD(LinguisticVariable var) {
         if (!getLinguisticVariables().contains(var)) {
             return null;
@@ -213,6 +215,64 @@ public class FuzzyTask {
         }
     }
 
+    public void drawFuzzyFunction(FuzzyPart function, float[] uod, Graphics g, Color color,
+            int height, int width, int left_offset, int bottom_offset,
+            int left_space, int bottom_space) {
+        g.create(left_offset, bottom_offset, width, height);
+
+        //float[] _uod = uod;
+        float max_x = Math.max(uod[0], uod[1]);
+
+        int scale_x = (int) ((width - left_space) / max_x);
+        int scale_y = height - bottom_space;
+
+        g.setColor(Color.white);
+        g.fillRect(left_offset, bottom_offset, width, height);
+
+        g.setColor(Color.black);
+
+//        g.drawLine(25, 0, 25, 325);
+//        g.drawLine(25, 325, 350, 325);
+        g.drawLine(left_space, 0, left_space, height - bottom_space);
+        g.drawLine(left_space, height - bottom_space, width, height - bottom_space);
+
+        for (int i = 0; i <= 10; i++) {
+
+            int x1_v = left_space - 5;//20;
+            int x2_v = left_space + 5;//30;
+            int yv = height - bottom_space - i * ((height - bottom_space) / 10);//325 - i * (325 / 10);
+            g.drawLine(x1_v, yv, x2_v, yv);
+
+        }
+
+        for (int i = 0; i <= (int) max_x; i += 2) {
+            int x_h = left_space + i * scale_x;// 25 + i * scale_x;
+            int y1_h = height - bottom_space - 5;//320;
+            int y2_h = height - bottom_space + 5;//330;
+            g.drawLine(x_h, y1_h, x_h, y2_h);
+        }
+
+        g.setColor(color);
+        FuzzyPart p = function;
+        for (int j = 0; j < p.getPoints().size() - 1; j++) {
+            float[] point_start = p.getPoints().get(j);
+            float[] point_end = p.getPoints().get(j + 1);
+
+            int x_start = (int) (left_space + point_start[0] * scale_x);
+            int x_end = (int) (left_space + point_end[0] * scale_x);
+            int y_start = (int) (height - bottom_space - point_start[1] * scale_y);
+            int y_end = (int) (height - bottom_space - point_end[1] * scale_y);
+            g.drawLine(x_start, y_start, x_end, y_end);
+
+            g.setColor(Color.black);
+            g.drawString("" + (int) point_start[0], x_start - 10, 350);
+            g.drawString("" + (int) point_end[0], x_end - 10, 350);
+
+            g.setColor(color);
+        }
+
+    }
+
     public List<FuzzyPart> getFuzzyForExactValue(float exactValue, LinguisticVariable var) {
         if (!linguisticVariables.contains(var)) {
             return null;
@@ -244,7 +304,7 @@ public class FuzzyTask {
         g.drawLine(x, 0, x, 325);
     }
 
-    public void drawCompleteGraphic(LinguisticVariable var, Graphics g, float exactValue){
+    public void drawCompleteGraphic(LinguisticVariable var, Graphics g, float exactValue) {
         drawGraphicWithExactValue(var, g, exactValue);
 
         g.setColor(Color.green);
@@ -258,18 +318,17 @@ public class FuzzyTask {
 
         int x = (int) (exactValue * scale_x + 25);
 
-        for (int i=0; i< results.size(); i++){
+        for (int i = 0; i < results.size(); i++) {
             FuzzyResult fRes = results.get(i);
 
             int y = (int) (325 - fRes.getEffectiveDegree() * scale_y);
 
             g.drawLine(x, y, 25, y);
 
-            g.setColor (Color.black);
-            g.drawString(""+fRes.getEffectiveDegree(), 15, y);
+            g.setColor(Color.black);
+            g.drawString("" + fRes.getEffectiveDegree(), 15, y);
             g.setColor(Color.green);
         }
-
     }
 
     public List<FuzzyResult> CalculateEffectiveDegree(LinguisticVariable var, float exactValue) {
@@ -303,5 +362,20 @@ public class FuzzyTask {
         }
 
         return values;
+    }
+
+    public LinguisticVariable getLinguisticVariableExcludedFrom(LinguisticVariable[] vars) {
+        for (int i = 0; i < linguisticVariables.size(); i++) {
+            LinguisticVariable var = linguisticVariables.get(i);
+            boolean nomatch = true;
+            for (int j = 0; j < vars.length; j++) {
+                nomatch = !var.equals(vars[j]);
+            }
+            if (nomatch == true) {
+                return var;
+            }
+
+        }
+        return null;
     }
 }

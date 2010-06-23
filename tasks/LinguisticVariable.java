@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package tasks;
 
 import java.util.List;
@@ -44,4 +43,12 @@ public class LinguisticVariable {
         this.fuzzyParts = fuzzyParts;
     }
 
+    public FuzzyPart getPartByName(String name) {
+        for (int i = 0; i < fuzzyParts.size(); i++) {
+            if (fuzzyParts.get(i).getName().equals(name)) {
+                return fuzzyParts.get(i);
+            }
+        }
+        return null;
+    }
 }
