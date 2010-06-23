@@ -1,0 +1,10 @@
+FuzzySolver
+
+Currently this application is designed to solve simple fuzzy logic tasks. Given a set of linguistic variables and a set of rules, it can create graphics of fuzzy functions and answer questions like "What is the probability of a car accident, if the traffic density is 13 cars per minute and current velocity is 30 km/h?"
+
+FuzzySolver started during preparation for a test in AI class at University of Applied Science (Mannheim). It was build to easily verify results of fuzzy tasks. 
+
+This project is open source. 
+
+
+Project status: in development, not ready to use yet

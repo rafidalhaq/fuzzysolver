@@ -10,7 +10,7 @@
  */
 package gui;
 
-import tasks.xml.FuzzyTask;
+import tasks.FuzzyTask;
 import java.awt.FileDialog;
 import java.io.FileNotFoundException;
 import java.io.IOException;
