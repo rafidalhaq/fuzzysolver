@@ -12,10 +12,7 @@ package gui;
 
 import tasks.FuzzyTask;
 import java.awt.FileDialog;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import tasks.buildin.OelVerbrauch;
 
 /**
  *
@@ -43,14 +40,19 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
         tfFuzzyTask = new javax.swing.JTextField();
         btnFuzzyTaskBrowser = new javax.swing.JButton();
         btnSolveFuzzyTask = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        canvas1 = new java.awt.Canvas();
+        label1 = new java.awt.Label();
+        label2 = new java.awt.Label();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("FuzzyTask");
+        jLabel1.setEnabled(false);
+
+        tfFuzzyTask.setEnabled(false);
 
         btnFuzzyTaskBrowser.setText("[...]");
+        btnFuzzyTaskBrowser.setEnabled(false);
         btnFuzzyTaskBrowser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFuzzyTaskBrowserActionPerformed(evt);
@@ -64,40 +66,51 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        label1.setText("UoD");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(tfFuzzyTask, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnFuzzyTaskBrowser))
+                            .addComponent(jLabel1)
+                            .addComponent(btnSolveFuzzyTask))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(tfFuzzyTask, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFuzzyTaskBrowser))
-                    .addComponent(jLabel1)
-                    .addComponent(btnSolveFuzzyTask))
-                .addContainerGap())
+                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(64, 64, 64))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfFuzzyTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnFuzzyTaskBrowser))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSolveFuzzyTask)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfFuzzyTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFuzzyTaskBrowser))
-                .addGap(18, 18, 18)
-                .addComponent(btnSolveFuzzyTask)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -112,7 +125,10 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFuzzyTaskBrowserActionPerformed
 
     private void btnSolveFuzzyTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveFuzzyTaskActionPerformed
-        jTextArea1.setText(task.getJobData());
+        OelVerbrauch verbrauch = new OelVerbrauch();
+        float[] uod = verbrauch.getUoD(verbrauch.getLinguisticVariables().get(0));
+        label2.setText("["+uod[0]+", "+uod[1]+"]");
+        verbrauch.drawGraphic(verbrauch.getLinguisticVariables().get(0), canvas1.getGraphics());
     }//GEN-LAST:event_btnSolveFuzzyTaskActionPerformed
 
     /**
@@ -129,20 +145,14 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFuzzyTaskBrowser;
     private javax.swing.JButton btnSolveFuzzyTask;
+    private java.awt.Canvas canvas1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private java.awt.Label label1;
+    private java.awt.Label label2;
     private javax.swing.JTextField tfFuzzyTask;
     // End of variables declaration//GEN-END:variables
 
     private void loadTask(String text) {
-        try {
-            task = new FuzzyTask();
-            task.loadFromFile(text);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FuzzySolverMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FuzzySolverMainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }
 }

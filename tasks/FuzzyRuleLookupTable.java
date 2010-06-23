@@ -15,6 +15,7 @@ public class FuzzyRuleLookupTable {
     private LinguisticVariable top;
     private LinguisticVariable left;
     private List<String[]> ruleSet;
+    private boolean andConnection;
 
     /**
      * @return the top
@@ -56,5 +57,14 @@ public class FuzzyRuleLookupTable {
      */
     public void setRuleSet(List<String[]> ruleSet) {
         this.ruleSet = ruleSet;
+    }
+
+    public void setAndConnection(boolean andConnection)
+    {
+        this.andConnection = andConnection;
+    }
+
+    public boolean isAndConnection(){
+        return andConnection;
     }
 }
