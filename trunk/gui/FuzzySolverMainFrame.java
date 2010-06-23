@@ -12,6 +12,9 @@ package gui;
 
 import tasks.FuzzyTask;
 import java.awt.FileDialog;
+import java.util.List;
+import javax.swing.JComboBox;
+import tasks.FuzzyRule;
 import tasks.buildin.OelVerbrauch;
 
 /**
@@ -43,6 +46,9 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
         canvas1 = new java.awt.Canvas();
         label1 = new java.awt.Label();
         label2 = new java.awt.Label();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +74,8 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
 
         label1.setText("UoD");
 
+        jLabel2.setText("result");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -80,16 +88,21 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(tfFuzzyTask, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnFuzzyTaskBrowser))
-                            .addComponent(jLabel1)
-                            .addComponent(btnSolveFuzzyTask))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSolveFuzzyTask)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBox1, 0, 322, Short.MAX_VALUE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(label2, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                    .addComponent(jLabel2))
                 .addGap(64, 64, 64))
         );
         layout.setVerticalGroup(
@@ -105,11 +118,18 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
                             .addComponent(tfFuzzyTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnFuzzyTaskBrowser))
                         .addGap(18, 18, 18)
-                        .addComponent(btnSolveFuzzyTask)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSolveFuzzyTask)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -127,10 +147,19 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
     private void btnSolveFuzzyTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveFuzzyTaskActionPerformed
         OelVerbrauch verbrauch = new OelVerbrauch();
         float[] uod = verbrauch.getUoD(verbrauch.getLinguisticVariables().get(0));
-        label2.setText("["+uod[0]+", "+uod[1]+"]");
+        label2.setText("[" + uod[0] + ", " + uod[1] + "]");
         //verbrauch.drawGraphic(verbrauch.getLinguisticVariables().get(0), canvas1.getGraphics());
         //verbrauch.drawGraphicWithExactValue(verbrauch.getLinguisticVariables().get(0), canvas1.getGraphics(),17);
-        verbrauch.drawCompleteGraphic(verbrauch.getLinguisticVariables().get(0), canvas1.getGraphics(),17);
+        //verbrauch.drawCompleteGraphic(verbrauch.getLinguisticVariables().get(0), canvas1.getGraphics(),17);
+
+        float result = verbrauch.solve(canvas1.getGraphics(), new float[]{18.0f, 28.0f});
+        jLabel3.setText("" + result);
+        List<FuzzyRule> rules = verbrauch.getGeneratedRules();
+        String[] s_rules = new String[rules.size()];
+        for (int i = 0; i < rules.size(); i++) {
+            s_rules[i] = rules.get(i).toString();
+        }
+        jComboBox1 = new JComboBox(s_rules);
     }//GEN-LAST:event_btnSolveFuzzyTaskActionPerformed
 
     /**
@@ -148,13 +177,15 @@ public class FuzzySolverMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnFuzzyTaskBrowser;
     private javax.swing.JButton btnSolveFuzzyTask;
     private java.awt.Canvas canvas1;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private java.awt.Label label1;
     private java.awt.Label label2;
     private javax.swing.JTextField tfFuzzyTask;
     // End of variables declaration//GEN-END:variables
 
     private void loadTask(String text) {
-       
     }
 }

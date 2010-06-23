@@ -69,6 +69,31 @@ public class FuzzyPart {
         return max;
     }
 
+    public float[] getX(float y) {
+        float slope_1 = 1 / (getHighestPoint() - getMinimum());
+        float slope_2 = 1 / (getMaximum() - getHighestPoint());
+        float[] result = new float[2];
+        result[0] = y / slope_1;
+        result[1] = y / slope_2;
+        return result;
+    }
+
+    public float getY(float x) {
+        if (x > getHighestPoint()) {
+            float slope = 1 / (getMaximum() - getHighestPoint());
+            return x * slope;
+        } else if (x < getHighestPoint()) {
+            float slope = 1 / (getHighestPoint() - getMinimum());
+            return x * slope;
+        } else {
+            return 1;
+        }
+    }
+
+    public float getCenter() {
+        return ((getMaximum() - getMinimum()) / 2.0f);
+    }
+
     public boolean isInPart(float exactValue) {
         float min = getMinimum();
         float max = getMaximum();
