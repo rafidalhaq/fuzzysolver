@@ -88,6 +88,12 @@ public class FuzzyRule {
 
     @Override
     public String toString(){
+        if (condition == null || condition.length==0)
+            return "EMPTY_RULE_CONDITION";
+        if (result == null )
+            return "EMPTY_RESULT";
+        if (rule == null || rule.length == 0)
+            return "EMPTY_RULE";
         String s="IF ";
         for (int i=0; i<condition.length; i++)
         {
