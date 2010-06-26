@@ -46,11 +46,19 @@ public class Test4FuzzyRule {
 
             fr.setRule(rule);
 
+            assert(condition_1.equals(fr.getCondition()[0]));
+            assert(condition_2.equals(fr.getCondition()[1]));
+            assert(result.equals(fr.getResult()));
+            assert(rule.equals(fr.getRule()));
+            assert(fr.getCond_effectivity()[0] == 0.27f);
+            assert(fr.getCond_effectivity()[1] == 0.33f);
+            assert(fr.getResult_effectivity() == 0.27f);
+
             System.out.println(fr.toString());
 
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
             return false;
         }
 
