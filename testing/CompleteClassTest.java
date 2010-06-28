@@ -31,10 +31,15 @@ public class CompleteClassTest extends BasicTest {
             boolean LinguisticVarOK = Test4LinguisticVariable.RunTest();
             System.out.println("[" + (LinguisticVarOK ? "OK" : "Failed") + "]");
 
+            System.out.println("Running test \"FuzzyPart\"");
+            boolean FuzzyPartOK = Test4FuzzyPart.RunTest();
+            System.out.println("[" + (FuzzyPartOK ? "OK" : "Failed") + "]");
+
             assert FuzzyResultOK;
             assert FuzzyRuleLUTOK;
             assert FuzzyRuleOK;
             assert LinguisticVarOK;
+            assert FuzzyPartOK;
 
             return true;
         } catch (Exception ex) {

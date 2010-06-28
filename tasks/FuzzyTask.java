@@ -349,11 +349,12 @@ public abstract class FuzzyTask {
                     fRes.setEffectiveDegree(p.getTrivialResult(exactValue));
                 } else {
                     float value = 0f;
-                    if (exactValue >= p.getMinimum() && exactValue < p.getHighestPoint()) {
-                        value = (exactValue - p.getMinimum()) / (p.getHighestPoint() - p.getMinimum());
-                    } else if (exactValue > p.getHighestPoint() && exactValue <= p.getMaximum()) {
-                        value = 1 - ((exactValue - p.getHighestPoint()) / (p.getMaximum() - p.getHighestPoint()));
-                    }
+//                    if (exactValue >= p.getMinimum() && exactValue < p.getHighestPoint()) {
+//                        value = (exactValue - p.getMinimum()) / (p.getHighestPoint() - p.getMinimum());
+//                    } else if (exactValue > p.getHighestPoint() && exactValue <= p.getMaximum()) {
+//                        value = 1 - ((exactValue - p.getHighestPoint()) / (p.getMaximum() - p.getHighestPoint()));
+//                    }
+                    value = p.getY(exactValue);
                     fRes.setEffectiveDegree(value);
                 }
                 values.add(fRes);
