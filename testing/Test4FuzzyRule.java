@@ -13,11 +13,12 @@ import tasks.FuzzyRule;
  *
  * @author malygos
  */
-public class Test4FuzzyRule {
+public class Test4FuzzyRule extends BasicTest{
 
     private static Class self = Test4FuzzyRule.class;
 
     public static boolean RunTest() {
+        setHasOutput(true);
         try {
             FuzzyRule fr = new FuzzyRule();
 

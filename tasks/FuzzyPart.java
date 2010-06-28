@@ -70,28 +70,81 @@ public class FuzzyPart {
     }
 
     public float[] getX(float y) {
-        float slope_1 = 1 / (getHighestPoint() - getMinimum());
-        float slope_2 = 1 / (getMaximum() - getHighestPoint());
-        float[] result = new float[2];
-        result[0] = y / slope_1;
-        result[1] = y / slope_2;
-        return result;
+        float[] highest = getHighestPoint();
+        float max = getMaximum();
+        float min = getMinimum();
+
+        float[] slopes = new float[highest.length == 1 ? 2 : highest.length];
+
+        if (highest.length == 1) {
+            slopes[0] = 1 / (highest[0] - min);
+            slopes[1] = -1 / (max - highest[0]);
+        } else {
+            for (int i = 0; i < highest.length; i++) {
+                slopes[i] = 1 / (highest[i] - (i == 0 ? min : max));
+            }
+        }
+
+        float[] xe = new float[slopes.length];
+        for (int i = 0; i < slopes.length; i++) {
+            if (slopes[i] > 0) {
+                xe[i] = y / slopes[i];
+            } else {
+                xe[i] = max + (y / slopes[i]);
+            }
+        }
+        return xe;
     }
 
     public float getY(float x) {
-        if (x > getHighestPoint()) {
-            float slope = 1 / (getMaximum() - getHighestPoint());
-            return x * slope;
-        } else if (x < getHighestPoint()) {
-            float slope = 1 / (getHighestPoint() - getMinimum());
-            return x * slope;
+
+        float[] highest = getHighestPoint();
+        float min = getMinimum();
+        float max = getMaximum();
+
+        float[] slopes = new float[highest.length == 1 ? 2 : highest.length];
+
+        if (highest.length == 1) {
+            slopes[0] = 1 / (highest[0] - min);
+            slopes[1] = -1 / (max - highest[0]);
         } else {
-            return 1;
+            for (int i = 0; i < highest.length; i++) {
+                slopes[i] = 1 / (highest[i] - (i == 0 ? min : max));
+            }
         }
+
+        for (int i = 0; i < highest.length; i++) {
+            if (0 <= x && x <= highest[i]) {
+                if (slopes[i] > 0) {
+                    return x * slopes[i];
+                } else {
+                    return 1 - (x * slopes[i]);
+                }
+            } else if (highest[i] <= x && x <= max) {
+                if (slopes[i] > 0) {
+                    return x * slopes[i];
+                } else {
+                    return 1 - (x * slopes[i]);
+                }
+            } else {
+                return 1;
+            }
+
+        }
+
+        return -1f;
+
     }
 
     public float getCenter() {
-        return ((getMaximum() - getMinimum()) / 2.0f);
+        //return ((getMaximum() - getMinimum()) / 2.0f);
+        float[] highest = getHighestPoint();
+        if (highest.length == 1)
+            return highest[0];
+        else if (highest.length == 2)
+            return (highest[0]+(highest[1]-highest[0])/2.0f);
+        else
+            return -1f;
     }
 
     public boolean isInPart(float exactValue) {
@@ -105,7 +158,8 @@ public class FuzzyPart {
     }
 
     public boolean isTrivial(float exactValue) {
-        for (int i = 0; i < points.size(); i++) {
+        for (int i = 0; i
+                < points.size(); i++) {
             if (exactValue == points.get(i)[0]) {
                 return true;
             }
@@ -115,7 +169,8 @@ public class FuzzyPart {
 
     public float getTrivialResult(float exactValue) {
         if (isTrivial(exactValue)) {
-            for (int i = 0; i < points.size(); i++) {
+            for (int i = 0; i
+                    < points.size(); i++) {
                 if (exactValue == points.get(i)[0]) {
                     return points.get(i)[1];
                 }
@@ -124,12 +179,27 @@ public class FuzzyPart {
         return -1f;
     }
 
-    public float getHighestPoint() {
-        for (int i = 0; i < points.size(); i++) {
+    public float[] getHighestPoint() {
+        float[] fpoints = null;
+        int counter = 0;
+        for (int i = 0; i
+                < points.size(); i++) {
             if (points.get(i)[1] == 1) {
-                return points.get(i)[0];
+                counter++;
             }
         }
-        return -1f;
+
+        if (counter > 0) {
+            fpoints = new float[counter];
+        }
+
+        int pid = 0;
+
+        for (int i = 0; i < points.size(); i++) {
+            if (points.get(i)[1] == 1) {
+                fpoints[pid++] = points.get(i)[0];
+            }
+        }
+        return fpoints;
     }
 }

@@ -4,14 +4,18 @@ package testing;
  *
  * @author malygos
  */
-public class CompleteClassTest {
+public class CompleteClassTest extends BasicTest {
 
     private static Class self = CompleteClassTest.class;
 
     public static boolean RunTest() {
-
+        setHasOutput(false);
         try {
-            System.out.print("Running test \"FuzzyResult\": ");
+            if (Test4FuzzyResult.isHasOutput()) {
+                System.out.println("Running test \"FuzzyResult\": ");
+            } else {
+                System.out.print("Running test \"FuzzyResult\": ");
+            }
             boolean FuzzyResultOK = Test4FuzzyResult.RunTest();
             System.out.println("[" + (FuzzyResultOK ? "OK" : "Failed") + "]");
 

@@ -10,11 +10,12 @@ import tasks.LinguisticVariable;
  *
  * @author malygos
  */
-public class Test4LinguisticVariable {
+public class Test4LinguisticVariable extends BasicTest{
 
     private static Class self = Test4LinguisticVariable.class;
 
     public static boolean RunTest() {
+        setHasOutput(true);
         try {
             LinguisticVariable left = new LinguisticVariable();
 
