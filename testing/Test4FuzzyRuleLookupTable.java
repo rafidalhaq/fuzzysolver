@@ -64,6 +64,16 @@ public class Test4FuzzyRuleLookupTable {
             lutab.setAndConnection(true);
 
 
+            LinguisticVariable actLeft, actTop;
+            actLeft = lutab.getLeft();
+            actTop = lutab.getTop();
+            List<String[]> actruleTable = lutab.getRuleSet();
+            boolean actANDConnection = lutab.isAndConnection();
+            assert (actLeft.equals(left));
+            assert (actTop.equals(top));
+            assert (actruleTable.equals(ruleTable));
+            assert (actANDConnection == true);
+
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
