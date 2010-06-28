@@ -10,11 +10,12 @@ import tasks.LinguisticVariable;
  *
  * @author malygos
  */
-public class Test4FuzzyRuleLookupTable {
+public class Test4FuzzyRuleLookupTable extends BasicTest{
 
     private static Class self = Test4FuzzyRuleLookupTable.class;
 
     public static boolean RunTest() {
+        setHasOutput(false);
         try {
             FuzzyRuleLookupTable lutab = new FuzzyRuleLookupTable();
             LinguisticVariable left = new LinguisticVariable();
