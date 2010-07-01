@@ -370,7 +370,7 @@ public abstract class FuzzyTask {
             LinguisticVariable var = linguisticVariables.get(i);
             boolean nomatch = true;
             for (int j = 0; j < vars.length; j++) {
-                nomatch = !var.equals(vars[j]);
+                nomatch &= !var.equals(vars[j]);
             }
             if (nomatch == true) {
                 return var;
