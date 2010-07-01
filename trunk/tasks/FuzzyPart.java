@@ -69,6 +69,17 @@ public class FuzzyPart {
         return max;
     }
 
+    public float getMaxY(){
+
+        float max = points.get(0)[1];
+        for (int i = 0; i < points.size(); i++) {
+            if (points.get(i)[1] > max) {
+                max = points.get(i)[1];
+            }
+        }
+        return max;
+    }
+
     public float[] getX(float y) {
         float[] highest = getHighestPoint();
         float max = getMaximum();
@@ -139,12 +150,16 @@ public class FuzzyPart {
     public float getCenter() {
         //return ((getMaximum() - getMinimum()) / 2.0f);
         float[] highest = getHighestPoint();
-        if (highest.length == 1)
-            return highest[0];
-        else if (highest.length == 2)
-            return (highest[0]+(highest[1]-highest[0])/2.0f);
-        else
+        if (highest == null) {
             return -1f;
+        }
+        if (highest.length == 1) {
+            return highest[0];
+        } else if (highest.length == 2) {
+            return (highest[0] + (highest[1] - highest[0]) / 2.0f);
+        } else {
+            return -1f;
+        }
     }
 
     public boolean isInPart(float exactValue) {
@@ -182,9 +197,9 @@ public class FuzzyPart {
     public float[] getHighestPoint() {
         float[] fpoints = null;
         int counter = 0;
-        for (int i = 0; i
-                < points.size(); i++) {
-            if (points.get(i)[1] == 1) {
+        float maxy = getMaxY();
+        for (int i = 0; i < points.size(); i++) {
+            if (points.get(i)[1] == maxy) {
                 counter++;
             }
         }
@@ -196,7 +211,7 @@ public class FuzzyPart {
         int pid = 0;
 
         for (int i = 0; i < points.size(); i++) {
-            if (points.get(i)[1] == 1) {
+            if (points.get(i)[1] == maxy) {
                 fpoints[pid++] = points.get(i)[0];
             }
         }
