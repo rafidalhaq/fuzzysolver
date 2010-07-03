@@ -194,11 +194,13 @@ public abstract class FuzzyTask {
 
         for (int i = 0; i < var.getFuzzyParts().size(); i++) {
             FuzzyPart p = var.getFuzzyParts().get(i);
-            float[] hsb = Color.RGBtoHSB(255 - (i * (255 / var.getFuzzyParts().size())), 0, 255, null);
-            g.setColor(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
-            for (int j = 0; j < p.getPoints().size() - 1; j++) {
-                float[] point_start = p.getPoints().get(j);
-                float[] point_end = p.getPoints().get(j + 1);
+            // Colors have moved to class FuzzyPart
+//            float[] hsb = Color.RGBtoHSB(255 - (i * (255 / var.getFuzzyParts().size())), 0, 255, null);
+//            g.setColor(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
+            g.setColor(p.getColor());
+            for (int j = 0; j < p.getPoints().length - 1; j++) {
+                float[] point_start = p.getPoints()[j];
+                float[] point_end = p.getPoints()[j+1];
 
                 int x_start = (int) (25 + point_start[0] * scale_x);
                 int x_end = (int) (25 + point_end[0] * scale_x);
@@ -210,7 +212,7 @@ public abstract class FuzzyTask {
                 g.drawString("" + (int) point_start[0], x_start - 10, 350);
                 g.drawString("" + (int) point_end[0], x_end - 10, 350);
 
-                g.setColor(Color.getHSBColor(hsb[0], hsb[1], hsb[2]));
+                g.setColor(p.getColor());
             }
         }
     }
@@ -254,9 +256,9 @@ public abstract class FuzzyTask {
 
         g.setColor(color);
         FuzzyPart p = function;
-        for (int j = 0; j < p.getPoints().size() - 1; j++) {
-            float[] point_start = p.getPoints().get(j);
-            float[] point_end = p.getPoints().get(j + 1);
+        for (int j = 0; j < p.getPoints().length - 1; j++) {
+            float[] point_start = p.getPoints()[j];
+            float[] point_end = p.getPoints()[j+1];
 
             int x_start = (int) (left_space + point_start[0] * scale_x);
             int x_end = (int) (left_space + point_end[0] * scale_x);

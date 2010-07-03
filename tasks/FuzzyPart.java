@@ -4,16 +4,35 @@
  */
 package tasks;
 
-import math.Trapez;
+import java.awt.Color;
+import math.PartGeometry;
 
 /**
  *
  * @author malygos
  */
-public class FuzzyPart extends Trapez{
+public class FuzzyPart extends PartGeometry{
 
     private String name;
+    private Color color;
 
+    public FuzzyPart(String name, float[] p1, float[] p2)
+    {
+        super(p1,p2);
+        this.name = name;
+    }
+
+    public FuzzyPart(String name, float[] p1, float[] p2, float[] p3)
+    {
+        super(p1,p2,p3);
+        this.name = name;
+    }
+
+    public FuzzyPart(String name, float[] p1, float[] p2, float[] p3, float[] p4)
+    {
+        super(p1,p2,p3,p4);
+        this.name = name;
+    }
 
     /**
      * @return the name
@@ -57,5 +76,19 @@ public class FuzzyPart extends Trapez{
 
     public float[][] getHighestPoint() {
         return this.getMaximumArea();
+    }
+
+    /**
+     * @return the color
+     */
+    public Color getColor() {
+        return color;
+    }
+
+    /**
+     * @param color the color to set
+     */
+    public void setColor(Color color) {
+        this.color = color;
     }
 }
