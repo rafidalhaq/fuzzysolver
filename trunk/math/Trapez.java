@@ -4,14 +4,22 @@
  */
 package math;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
+ * Class representing geometric figure of trapez.
+ * Note that points have to be defined in an ordered fashion,
+ * it is recommended to define them from left to right.
  * @author malygos
  */
 public class Trapez {
 
     private float[][] points;
     private boolean isOrdered;
+
+    public Trapez() {
+    }
 
     public Trapez(float[] p0, float[] p1, float[] p2) {
         isOrdered = false;
@@ -90,6 +98,80 @@ public class Trapez {
 
     }
 
+    public float[] getX(float y) {
+        assert points != null;
+        assert points.length > 0;
+        if (y == getMaxY()) {
+            if (points.length == 3) {
+                for (int i = 0; i < points.length; i++) {
+                    if (points[i][1] == y) {
+                        return new float[]{points[i][0]};
+                    }
+                }
+                return null;
+            } else if (points.length == 4) {
+                float[] xe = new float[2];
+                int pid = 0;
+                for (int i = 0; i < points.length; i++) {
+                    if (points[i][1] == y) {
+                        xe[pid] = points[i][0];
+                        pid++;
+                    }
+                }
+                return xe;
+            } else {
+                return null;
+            }
+        } else {
+            if (points.length == 3) {
+                float slope1 = (points[1][1] - points[0][1]) / (points[1][0] - points[0][0]);
+                float slope2 = (points[2][1] - points[1][1]) / (points[2][0] - points[1][0]);
+                float[] result = new float[2];
+                result[0] = slope1 > 0 ? points[0][0] + (y / slope1) : points[0][0] - (y / slope1);
+                result[1] = slope1 > 0 ? points[2][0] - (y / slope2) : points[2][0] + (y / slope2);
+                return result;
+            } else if (points.length == 4) {
+                float slope1 = (points[1][1] - points[0][1]) / (points[1][0] - points[0][0]);
+                float slope2 = (points[3][1] - points[2][1]) / (points[3][0] - points[2][0]);
+                float[] result = new float[2];
+                result[0] = slope1 > 0 ? points[0][0] + (y / slope1) : points[0][0] - (y / slope1);
+                result[1] = slope2 > 0 ? points[3][0] - (y / slope2) : points[3][0] + (y / slope2);
+                return result;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public float[][] getMaximumArea() {
+        assert points != null;
+        assert points.length > 0;
+
+        List<float[]> areaPoints = new ArrayList<float[]>();
+        for (int i = 0; i < points.length; i++) {
+            if (points[i][1] == getMaxY()) {
+                areaPoints.add(points[i]);
+            }
+        }
+
+        float[][] result = new float[areaPoints.size()][];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = new float[2];
+            result[i][0] = areaPoints.get(i)[0];
+            result[i][1] = areaPoints.get(i)[1];
+        }
+        return result;
+
+    }
+
+    public float getCenterOfMaximum() {
+        float[][] maxArea = getMaximumArea();
+        assert maxArea.length == 2;
+        float left = maxArea[0][0];
+        float right = maxArea[1][0];
+        return right - ((right - left) / 2);
+    }
+
     private void addPoint(int i, float[] p0) {
         assert (i >= 0);
         assert (i < points.length);
@@ -98,7 +180,7 @@ public class Trapez {
         points[i][1] = p0[1];
     }
 
-    private float getMaxX() {
+    public float getMaxX() {
         assert points != null;
         assert points.length > 0;
 
@@ -111,7 +193,7 @@ public class Trapez {
         return max;
     }
 
-    private float getMinX() {
+    public float getMinX() {
         assert points != null;
         assert points.length > 0;
 
@@ -124,35 +206,43 @@ public class Trapez {
         return min;
     }
 
-    private void order() {
-        float[][] tmp = new float[points.length][];
+    public float getMaxY() {
+        assert points != null;
+        assert points.length > 0;
+
+        float max = 0f;
         for (int i = 0; i < points.length; i++) {
-            tmp[i] = new float[points[i].length];
+            if (points[i][1] > max) {
+                max = points[i][1];
+            }
         }
+        return max;
+    }
 
-        float min = getMinX();
-        float max = getMaxX();
-        float lastMin = min;
-        int tmpID = 0;
+    public void order() {
+
+        java.util.Arrays.sort(points);
+        java.util.Arrays.toString(points);
+
+    }
+
+    public boolean isTrivial(float exactValue) {
         for (int i = 0; i < points.length; i++) {
-            if (points[i][0] == lastMin) {
-                tmp[tmpID][0] = min;
-                tmp[tmpID][1] = points[i][1];
-                tmpID++;
+            if (exactValue == points[i][0]) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-                for (int j = 0; j < points.length; j++) {
-                    if ((points[j][0] > lastMin) && (points[j][0] < max)) {
-                        lastMin = points[j][0];
-                        break;
-                    }
+    public float getTrivialResult(float exactValue) {
+        if (isTrivial(exactValue)) {
+            for (int i = 0; i < points.length; i++) {
+                if (exactValue == points[i][0]) {
+                    return points[i][1];
                 }
             }
         }
-
-        for (int i = 0; i < tmp.length; i++) {
-            points[i][0] = tmp[i][0];
-            points[i][1] = tmp[i][1];
-        }
-        isOrdered = true;
+        return -1f;
     }
 }
